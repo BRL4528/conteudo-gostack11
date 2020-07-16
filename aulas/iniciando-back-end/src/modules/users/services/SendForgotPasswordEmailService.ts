@@ -4,7 +4,6 @@ import AppError from '@shared/errors/AppError';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
-import UserToken from '../infra/typeorm/entities/UserToken';
 
 // import User from '../infra/typeorm/entities/User';
 
@@ -21,7 +20,7 @@ class SendForgotEmailPassword {
     @inject('MailProvider')
     private mailProvider: IMailProvider,
 
-    @inject('UserTokenRepository')
+    @inject('UserTokensRepository')
     private userTokensRepository: IUserTokensRepository,
   ) {}
 
@@ -32,7 +31,7 @@ class SendForgotEmailPassword {
       throw new AppError('User does not exists.');
     }
 
-   const { token } = await this.userTokensRepository.generate(user.id);
+    const { token } = await this.userTokensRepository.generate(user.id);
 
     await this.mailProvider.sendMail({
       to: {
@@ -45,8 +44,8 @@ class SendForgotEmailPassword {
         variables: {
           name: user.name,
           token,
-        }
-      }
+        },
+      },
     });
   }
 }

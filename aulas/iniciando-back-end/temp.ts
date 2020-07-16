@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export default class xxxxxxxxxxxx implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -42,15 +42,13 @@ export default class xxxxxxxxxxxx implements MigrationInterface {
             columnNames: ['user_id'],
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
-          }
-        ]
-      })
-    )
+          },
+        ],
+      }),
+    );
   }
-
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('user_tokens');
   }
-
 }

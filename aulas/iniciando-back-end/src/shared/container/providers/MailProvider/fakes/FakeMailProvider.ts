@@ -1,7 +1,6 @@
 import IMailProvider from '../models/IMailProvider';
 import ISendMaiDTO from '../dtos/ISendMailDTOS';
 
-
 export default class FakeMailProvider implements IMailProvider {
   private messages: ISendMaiDTO[] = [];
 

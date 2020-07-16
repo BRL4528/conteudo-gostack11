@@ -1,4 +1,4 @@
-import { StorageEngine } from 'multer';
+// import { StorageEngine } from 'multer';
 
 export default interface IHshProvider {
   generateHash(payload: string): Promise<string>;

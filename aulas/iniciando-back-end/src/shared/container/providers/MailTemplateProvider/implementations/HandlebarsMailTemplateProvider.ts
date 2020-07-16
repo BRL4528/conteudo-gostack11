@@ -4,10 +4,13 @@ import IParseMailTemplateDTO from '../dtos/IParseMailTemplateDTO';
 import IMailTemplateProvider from '../models/IMailTamplateProvider';
 
 class HandlebarsMailTemplateProvider implements IMailTemplateProvider {
-  public async parse({ template, variables }: IParseMailTemplateDTO): Promise<string> {
-    const parseTemplate = handlebars.compile(template)
+  public async parse({
+    template,
+    variables,
+  }: IParseMailTemplateDTO): Promise<string> {
+    const parseTemplate = handlebars.compile(template);
 
-    return parseTemplate(variables)
+    return parseTemplate(variables);
   }
 }
 
