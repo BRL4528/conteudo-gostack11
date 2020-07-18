@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { getHours } from 'date-fns';
+import { getHours, isAfter } from 'date-fns';
 
 import IApointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -21,36 +21,46 @@ type IResponse = Array<{
 class ListProviderDayAvailabilityService {
   constructor(
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IApointmentsRepository
+    private appointmentsRepository: IApointmentsRepository,
   ) {}
 
-  public async execute({ provider_id, month, year, day }: IRequest): Promise<IResponse> {
-    const appointments = await this.appointmentsRepository.findAllInDayFromProvider({
-      provider_id,
-      year,
-      month,
-      day,
-    });
+  public async execute({
+    provider_id,
+    month,
+    year,
+    day,
+  }: IRequest): Promise<IResponse> {
+    const appointments = await this.appointmentsRepository.findAllInDayFromProvider(
+      {
+        provider_id,
+        year,
+        month,
+        day,
+      },
+    );
 
-    const hourstart = 8;
+    const hourStart = 8;
 
     const eachHourArray = Array.from(
-      { lenght: 10 },
-      (_, index) => index + hourstart,
+      { length: 10 },
+      (_, index) => index + hourStart,
     );
+    const currentDate = new Date(Date.now());
 
     const availability = eachHourArray.map(hour => {
       const hasAppointmentInHour = appointments.find(
         appointment => getHours(appointment.date) === hour,
-      )
+      );
+
+      const compareDate = new Date(year, month - 1, day, hour);
 
       return {
         hour,
-        available: !hasAppointmentInHour,
-      }
-    })
+        available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
+      };
+    });
 
-   return availability;
+    return availability;
   }
 }
 

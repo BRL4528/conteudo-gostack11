@@ -29,20 +29,22 @@ class UsersRespository implements IUsersRepository {
   }
 
   /// Feito no windows
-  public async findAllProviders({ except_user_id, }: IFindAllProvidersDTO ): Promise<User[]> {
-   let users: User[];
+  public async findAllProviders({
+    except_user_id,
+  }: IFindAllProvidersDTO): Promise<User[]> {
+    let users: User[];
 
-   if (except_user_id) {
-     users = await this.ormRepository.find({
-       where: {
-         id: Not(except_user_id),
-       },
-     });
-   } else {
-     users = await this.ormRepository.find();
-   }
+    if (except_user_id) {
+      users = await this.ormRepository.find({
+        where: {
+          id: Not(except_user_id),
+        },
+      });
+    } else {
+      users = await this.ormRepository.find();
+    }
 
-    return users
+    return users;
   }
 
   public async create(userData: ICreateUserDTO): Promise<User> {

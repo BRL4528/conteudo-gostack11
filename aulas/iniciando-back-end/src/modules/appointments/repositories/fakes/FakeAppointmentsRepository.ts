@@ -19,43 +19,48 @@ class AppointmentsRespository implements IAppointmentsRepository {
     return findAppointment;
   }
 
-  public async findAllInMonthFromProvider({ month, year, provider_id }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
-    const appointments = this.appointments.filter(appointment =>
-      {
-        return (
-          appointment.provider_id === provider_id &&
-          getMonth(appointment.date) +1 === month &&
-          getYear(appointment.date) === year
-        );
-      }
-    );
+  public async findAllInMonthFromProvider({
+    month,
+    year,
+    provider_id,
+  }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(appointment => {
+      return (
+        appointment.provider_id === provider_id &&
+        getMonth(appointment.date) + 1 === month &&
+        getYear(appointment.date) === year
+      );
+    });
 
     return appointments;
   }
 
-
-  public async findAllInDayFromProvider({ day, month, year, provider_id }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
-    const appointments = this.appointments.filter(appointment =>
-      {
-        return (
-          appointment.provider_id === provider_id &&
-          getDate(appointment.date) === day &&
-          getMonth(appointment.date) +1 === month &&
-          getYear(appointment.date) === year
-        );
-      }
-    );
+  public async findAllInDayFromProvider({
+    day,
+    month,
+    year,
+    provider_id,
+  }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(appointment => {
+      return (
+        appointment.provider_id === provider_id &&
+        getDate(appointment.date) === day &&
+        getMonth(appointment.date) + 1 === month &&
+        getYear(appointment.date) === year
+      );
+    });
 
     return appointments;
   }
 
   public async create({
     provider_id,
+    user_id,
     date,
   }: ICreateAppointmentsDTO): Promise<Appointment> {
     const appointment = new Appointment();
 
-    Object.assign(appointment, { id: uuid(), date, provider_id });
+    Object.assign(appointment, { id: uuid(), date, provider_id, user_id });
 
     this.appointments.push(appointment);
 
