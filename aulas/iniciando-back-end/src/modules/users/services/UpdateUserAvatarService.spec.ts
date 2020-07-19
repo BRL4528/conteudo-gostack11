@@ -18,6 +18,7 @@ describe('UpdateUserAvatar', () => {
       fakeStorageProvider,
     );
   });
+
   it('should be able to create a new user', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
@@ -27,7 +28,7 @@ describe('UpdateUserAvatar', () => {
 
     await updateUserAvatar.execute({
       user_id: user.id,
-      avatartFilename: 'avatar.jpg',
+      avatarFilename: 'avatar.jpg',
     });
 
     expect(user.avatar).toBe('avatar.jpg');
@@ -37,7 +38,7 @@ describe('UpdateUserAvatar', () => {
     await expect(
       updateUserAvatar.execute({
         user_id: 'non-existing-user',
-        avatartFilename: 'avatar.jpg',
+        avatarFilename: 'avatar.jpg',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -53,12 +54,12 @@ describe('UpdateUserAvatar', () => {
 
     await updateUserAvatar.execute({
       user_id: user.id,
-      avatartFilename: 'avatar.jpg',
+      avatarFilename: 'avatar.jpg',
     });
 
     await updateUserAvatar.execute({
       user_id: user.id,
-      avatartFilename: 'avatar2.jpg',
+      avatarFilename: 'avatar2.jpg',
     });
 
     expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
