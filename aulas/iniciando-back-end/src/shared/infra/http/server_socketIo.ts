@@ -53,6 +53,19 @@ class App {
     });
   }
 
+  socket() {
+    this.io = io(this.server);
+
+    this.io.on('connection', socket => {
+      const { user_id } = socket.handshake.query;
+      this.connectedUsers[user_id] = socket.id;
+
+      socket.on('disconnect', () => {
+        delete this.connectedUsers[user_id];
+      });
+    });
+  }
+
   middlewares() {
     this.app.use(express.json());
     this.app.use(cors());
